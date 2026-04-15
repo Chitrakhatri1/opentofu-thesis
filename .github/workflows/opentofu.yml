@@ -1,0 +1,33 @@
+name: OpenTofu CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  opentofu-checks:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./Aws-network
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: latest
+
+      - name: Check formatting
+        run: tofu fmt -check -recursive
+
+      - name: Initialize OpenTofu
+        run: tofu init -backend=false
+
+      - name: Validate configuration
+        run: tofu validate
