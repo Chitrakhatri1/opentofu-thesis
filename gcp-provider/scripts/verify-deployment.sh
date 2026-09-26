@@ -8,7 +8,7 @@ if [[ "${tool}" != "tofu" && "${tool}" != "terraform" ]]; then
   exit 2
 fi
 
-for command_name in "${tool}" gcloud; do
+for command_name in "${tool}" gcloud grep; do
   if ! command -v "${command_name}" >/dev/null 2>&1; then
     echo "ERROR: Required command not found: ${command_name}" >&2
     exit 1
@@ -30,38 +30,28 @@ subnet_region="$(gcloud compute networks subnets describe "${subnet_name}" \
   --region "${region}" \
   --format='value(region.basename())')"
 
-uniform_access="$(gcloud storage buckets describe "gs://${bucket_name}" \
+gcloud storage buckets describe "gs://${bucket_name}" \
   --project "${project_id}" \
-  --format='value(iamConfiguration.uniformBucketLevelAccess.enabled)')"
+  --format='value(name)' >/dev/null
 
-public_access_prevention="$(gcloud storage buckets describe "gs://${bucket_name}" \
-  --project "${project_id}" \
-  --format='value(iamConfiguration.publicAccessPrevention)')"
-
-versioning_enabled="$(gcloud storage buckets describe "gs://${bucket_name}" \
-  --project "${project_id}" \
-  --format='value(versioning.enabled)')"
-
-uniform_access="$(printf '%s' "${uniform_access}" | tr '[:upper:]' '[:lower:]')"
-public_access_prevention="$(printf '%s' "${public_access_prevention}" | tr '[:upper:]' '[:lower:]')"
-versioning_enabled="$(printf '%s' "${versioning_enabled}" | tr '[:upper:]' '[:lower:]')"
+storage_state="$(${tool} state show module.storage.google_storage_bucket.this)"
 
 [[ -n "${subnet_region}" ]] || {
   echo "ERROR: Subnet region could not be verified." >&2
   exit 1
 }
 
-[[ "${uniform_access}" == "true" ]] || {
+grep -Eq 'uniform_bucket_level_access[[:space:]]*=[[:space:]]*true' <<<"${storage_state}" || {
   echo "ERROR: Uniform bucket-level access is not enabled." >&2
   exit 1
 }
 
-[[ "${public_access_prevention}" == "enforced" ]] || {
+grep -Eq 'public_access_prevention[[:space:]]*=[[:space:]]*"enforced"' <<<"${storage_state}" || {
   echo "ERROR: Public access prevention is not enforced." >&2
   exit 1
 }
 
-[[ "${versioning_enabled}" == "true" ]] || {
+grep -Eq 'enabled[[:space:]]*=[[:space:]]*true' <<<"${storage_state}" || {
   echo "ERROR: Bucket versioning is not enabled." >&2
   exit 1
 }
