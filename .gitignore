@@ -15,3 +15,7 @@ override.tf.json
 *.auto.tfvars
 !*.auto.tfvars.example
 .DS_Store
+
+# Private experiment logs may contain account IDs, resource IDs, and local paths.
+experiments/results/raw/*
+!experiments/results/raw/README.md

@@ -9,6 +9,16 @@ permissions:
   contents: read
 
 jobs:
+  experiment-scripts:
+    name: Experiment script syntax
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check Bash syntax
+        run: bash -n experiments/scripts/*.sh
+
   opentofu:
     name: OpenTofu validation
     runs-on: ubuntu-latest
