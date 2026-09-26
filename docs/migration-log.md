@@ -4,7 +4,7 @@ Record every compatibility observation, including cases where no code change is 
 
 | Date | Commit | Step | Observation | Category | Required change | Time spent | Evidence |
 |---|---|---|---|---|---|---:|---|
-| | | | | syntax/provider/module/state/CI/docs | | | |
+| 2026-09-26 | `10e3262` | GitHub Actions validation | The same configuration passed formatting, initialization, and validation jobs for OpenTofu 1.10.7 and Terraform 1.5.7. | CI/compatibility | None for validation. Deployment comparison remains pending. | Not measured | GitHub Actions run `36239313197` |
 
 ## Initial compatibility observation
 

@@ -6,6 +6,8 @@ The Phase 1 OpenTofu apply completed in the local workspace `phase1-tofu`. The l
 
 Formatting and OpenTofu configuration validation were successfully checked on 2026-09-26.
 
+The Phase 1 source was pushed to GitHub in commit `10e3262`. GitHub Actions run `36239313197` completed successfully for both the OpenTofu and Terraform validation jobs. A separate empty Terraform workspace named `phase1-terraform` was then prepared for the formal Terraform baseline.
+
 The most recent live verification attempt on 2026-09-26 could not contact AWS because the configured AWS security token was invalid or expired (`InvalidClientTokenId`). This is an authentication problem, not evidence that the infrastructure failed. Renew the AWS login before performing live checks or cleanup.
 
 The deployed resources may continue to incur AWS charges while authentication is unavailable.
