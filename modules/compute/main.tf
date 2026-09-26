@@ -8,14 +8,14 @@ resource "aws_security_group" "this" {
   vpc_id      = var.vpc_id
 
   dynamic "ingress" {
-    for_each = length(var.allowed_http_cidrs) == 0 ? [] : [1]
+    for_each = length(var.allowed_http_security_group_ids) == 0 ? [] : [1]
 
     content {
-      description = "Temporary HTTP test access"
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = var.allowed_http_cidrs
+      description     = "HTTP from the Application Load Balancer"
+      from_port       = 80
+      to_port         = 80
+      protocol        = "tcp"
+      security_groups = var.allowed_http_security_group_ids
     }
   }
 

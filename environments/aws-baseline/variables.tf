@@ -58,9 +58,13 @@ variable "instance_type" {
 }
 
 variable "allowed_http_cidrs" {
-  description = "Temporary HTTP test sources. Prefer your public IPv4 address with /32; empty disables inbound HTTP."
+  description = "IPv4 CIDR blocks allowed to access the public load balancer. Prefer your public IPv4 address with /32."
   type        = list(string)
-  default     = []
+
+  validation {
+    condition     = length(var.allowed_http_cidrs) > 0 && alltrue([for cidr in var.allowed_http_cidrs : can(cidrnetmask(cidr))])
+    error_message = "Provide at least one valid IPv4 CIDR block for load-balancer HTTP access."
+  }
 }
 
 variable "force_destroy_bucket" {

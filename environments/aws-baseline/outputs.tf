@@ -19,8 +19,18 @@ output "instance_public_ip" {
 }
 
 output "instance_url" {
-  description = "HTTP URL for the demonstration. It is reachable only when allowed_http_cidrs permits the caller."
+  description = "Direct instance URL for diagnostics. HTTP ingress permits only the load-balancer security group."
   value       = "http://${module.compute.public_dns}"
+}
+
+output "load_balancer_dns_name" {
+  description = "Public DNS name of the Application Load Balancer."
+  value       = module.load_balancer.dns_name
+}
+
+output "load_balancer_url" {
+  description = "Public HTTP URL for the thesis demonstration workload."
+  value       = "http://${module.load_balancer.dns_name}"
 }
 
 output "ami_id" {

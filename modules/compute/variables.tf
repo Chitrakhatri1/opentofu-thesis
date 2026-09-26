@@ -19,15 +19,10 @@ variable "instance_type" {
   default     = "t3.micro"
 }
 
-variable "allowed_http_cidrs" {
-  description = "CIDR blocks allowed to access HTTP port 80. Keep empty unless conducting a short test."
+variable "allowed_http_security_group_ids" {
+  description = "Security group IDs allowed to access HTTP port 80."
   type        = list(string)
   default     = []
-
-  validation {
-    condition     = alltrue([for cidr in var.allowed_http_cidrs : can(cidrnetmask(cidr))])
-    error_message = "Every allowed_http_cidrs entry must be a valid IPv4 CIDR block."
-  }
 }
 
 variable "tags" {

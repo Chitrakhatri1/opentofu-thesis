@@ -9,7 +9,7 @@ modules/                    Reusable AWS modules
   network/                  VPC, public subnets, routing
   compute/                  EC2 web instance and security group
   storage/                  Private, encrypted, versioned S3 bucket
-  load-balancer/            Reserved for Phase 2
+  load-balancer/            Application Load Balancer, listener, target group
 environments/
   aws-baseline/             Root configuration used by both tools
 experiments/
@@ -24,13 +24,14 @@ legacy/                     Preserved initial proof-of-concept code
 
 ## Current Phase 1 baseline
 
-The baseline composes three modules:
+The baseline composes four modules:
 
 - A VPC with two public subnets in separate availability zones.
 - One Amazon Linux 2023 EC2 instance running a simple Apache page.
 - One private S3 bucket with server-side encryption and versioning.
+- One public Application Load Balancer with an HTTP listener and health-checked target group.
 
-The load balancer is intentionally reserved for Phase 2. Direct HTTP access to the instance is disabled by default. For a short test, set `allowed_http_cidrs` to your public IP with a `/32` suffix.
+Set `allowed_http_cidrs` to your public IPv4 address with a `/32` suffix. This permits access to the load balancer. Direct HTTP access to the EC2 instance is blocked; the instance accepts port 80 only from the load-balancer security group.
 
 ## Requirements
 
@@ -64,7 +65,7 @@ The separate data directories keep each tool's plugin cache independent, which m
 
 ## Cost and cleanup
 
-This configuration creates billable AWS resources. Review the plan before applying. After testing, run the destroy command with the same tool and state used for the apply:
+This configuration creates billable AWS resources, including an Application Load Balancer. Review current pricing and the plan before applying. After testing, run the destroy command with the same tool and state used for the apply:
 
 ```bash
 tofu destroy
