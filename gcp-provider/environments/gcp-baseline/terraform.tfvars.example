@@ -1,0 +1,8 @@
+project_id = "opentofu-thesis"
+region     = "europe-west3"
+
+# Replace this with 4-12 lowercase letters or digits. Bucket names are global,
+# so use a value that is unlikely to collide, such as initials plus digits.
+bucket_suffix = "ck7489"
+
+subnet_cidr = "10.40.1.0/24"
