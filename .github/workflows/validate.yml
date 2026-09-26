@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check Bash syntax
-        run: bash -n experiments/scripts/*.sh
+        run: bash -n experiments/scripts/*.sh second-provider/scripts/*.sh
 
   opentofu:
     name: OpenTofu validation
@@ -64,6 +64,52 @@ jobs:
 
       - name: Check formatting
         run: terraform fmt -check -recursive ../..
+
+      - name: Initialize without backend
+        run: terraform init -backend=false
+
+      - name: Validate
+        run: terraform validate
+
+  azure-opentofu:
+    name: Azure OpenTofu validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .tofu-data
+    defaults:
+      run:
+        working-directory: second-provider/environments/azure-baseline
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.10.7
+
+      - name: Initialize without backend
+        run: tofu init -backend=false
+
+      - name: Validate
+        run: tofu validate
+
+  azure-terraform:
+    name: Azure Terraform validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .terraform-data
+    defaults:
+      run:
+        working-directory: second-provider/environments/azure-baseline
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
 
       - name: Initialize without backend
         run: terraform init -backend=false

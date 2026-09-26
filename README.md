@@ -17,7 +17,7 @@ experiments/
   results/raw/              Ignored raw command output
   results/processed/        Sanitized thesis datasets
 docs/                       Architecture and experiment documentation
-second-provider/            Bounded Azure or GCP extension in Phase 5
+second-provider/            Bounded Azure network and storage extension
 legacy/                     Preserved initial proof-of-concept code
 .github/workflows/          CI validation
 ```
@@ -74,3 +74,11 @@ tofu destroy
 The S3 bucket uses `force_destroy = false` by default. Empty the bucket before destroy if test objects were uploaded.
 
 Never commit credentials, `terraform.tfvars`, plan files, state files, or raw logs containing account details.
+
+## Second-provider implementation
+
+The bounded Azure extensibility case is implemented under `second-provider/`.
+It creates a resource group, virtual network, subnet, and secure storage account
+and is validated by CI with both Terraform and OpenTofu. See
+`second-provider/README.md` for authentication, deployment, verification, and
+cleanup steps.

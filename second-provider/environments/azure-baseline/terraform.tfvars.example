@@ -1,0 +1,11 @@
+azure_location = "westeurope"
+
+# Replace this with 4-10 lowercase letters or digits. Storage account names are
+# global, so use a value that is unlikely to collide, such as initials plus digits.
+unique_suffix = "ck1234"
+
+vnet_address_space = ["10.30.0.0/16"]
+
+subnets = {
+  workload = ["10.30.1.0/24"]
+}
