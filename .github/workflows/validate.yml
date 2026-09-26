@@ -1,0 +1,62 @@
+name: Validate infrastructure
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  opentofu:
+    name: OpenTofu validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .tofu-data
+    defaults:
+      run:
+        working-directory: environments/aws-baseline
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.10.7
+
+      - name: Check formatting
+        run: tofu fmt -check -recursive ../..
+
+      - name: Initialize without backend
+        run: tofu init -backend=false
+
+      - name: Validate
+        run: tofu validate
+
+  terraform:
+    name: Terraform validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .terraform-data
+    defaults:
+      run:
+        working-directory: environments/aws-baseline
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - name: Check formatting
+        run: terraform fmt -check -recursive ../..
+
+      - name: Initialize without backend
+        run: terraform init -backend=false
+
+      - name: Validate
+        run: terraform validate

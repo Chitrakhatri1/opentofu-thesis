@@ -1,0 +1,23 @@
+aws_region   = "eu-central-1"
+project_name = "opentofu-thesis"
+environment  = "experiment"
+
+public_subnets = {
+  public-a = {
+    cidr_block        = "10.20.1.0/24"
+    availability_zone = "eu-central-1a"
+  }
+  public-b = {
+    cidr_block        = "10.20.2.0/24"
+    availability_zone = "eu-central-1b"
+  }
+}
+
+instance_type = "t3.micro"
+
+# Replace with your public IPv4 address followed by /32 for a short HTTP test.
+# Leave empty when direct access is not needed.
+allowed_http_cidrs = []
+
+# Keep false unless this is a disposable experiment and automatic object deletion is required.
+force_destroy_bucket = false
