@@ -1,0 +1,6 @@
+project_id    = "replace-with-your-project-id"
+bucket_suffix = "replace123"
+
+# Keep false for the first validation and storage/network/identity lifecycle.
+# Enable only after checking current billing eligibility and quota.
+enable_compute = false

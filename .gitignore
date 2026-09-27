@@ -4,6 +4,7 @@
 *.tfstate
 *.tfstate.*
 *.tfplan
+enterprise-lite-*.txt
 crash.log
 crash.*.log
 override.tf

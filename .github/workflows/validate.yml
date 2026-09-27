@@ -17,7 +17,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check Bash syntax
-        run: bash -n experiments/scripts/*.sh second-provider/scripts/*.sh
+        run: >-
+          bash -n experiments/scripts/*.sh
+          second-provider/scripts/*.sh
+          gcp-provider/scripts/*.sh
+          enterprise-lite/aws/scripts/*.sh
+          enterprise-lite/gcp/scripts/*.sh
 
   opentofu:
     name: OpenTofu validation
@@ -116,3 +121,99 @@ jobs:
 
       - name: Validate
         run: terraform validate
+
+  gcp-opentofu:
+    name: GCP OpenTofu validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .tofu-data
+    defaults:
+      run:
+        working-directory: gcp-provider/environments/gcp-baseline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.10.7
+      - run: tofu init -backend=false
+      - run: tofu validate
+
+  gcp-terraform:
+    name: GCP Terraform validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .terraform-data
+    defaults:
+      run:
+        working-directory: gcp-provider/environments/gcp-baseline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+      - run: terraform init -backend=false
+      - run: terraform validate
+
+  enterprise-aws-opentofu:
+    name: Enterprise AWS OpenTofu validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .tofu-data
+    defaults:
+      run:
+        working-directory: enterprise-lite/aws/environments/aws-enterprise-lite
+    steps:
+      - uses: actions/checkout@v4
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.10.7
+      - run: tofu init -backend=false
+      - run: tofu validate
+
+  enterprise-aws-terraform:
+    name: Enterprise AWS Terraform validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .terraform-data
+    defaults:
+      run:
+        working-directory: enterprise-lite/aws/environments/aws-enterprise-lite
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+      - run: terraform init -backend=false
+      - run: terraform validate
+
+  enterprise-gcp-opentofu:
+    name: Enterprise GCP OpenTofu validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .tofu-data
+    defaults:
+      run:
+        working-directory: enterprise-lite/gcp/environments/gcp-enterprise-lite
+    steps:
+      - uses: actions/checkout@v4
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.10.7
+      - run: tofu init -backend=false
+      - run: tofu validate
+
+  enterprise-gcp-terraform:
+    name: Enterprise GCP Terraform validation
+    runs-on: ubuntu-latest
+    env:
+      TF_DATA_DIR: .terraform-data
+    defaults:
+      run:
+        working-directory: enterprise-lite/gcp/environments/gcp-enterprise-lite
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+      - run: terraform init -backend=false
+      - run: terraform validate
