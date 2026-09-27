@@ -31,6 +31,8 @@ The enterprise-lite case extends the original baseline with patterns derived fro
 
 Formal AWS enterprise-lite results are stored in `experiments/results/processed/enterprise-comparison.csv`. A trial counts as successful only if initialization, validation, plan, apply, deployment verification, idempotence, destroy, and cleanup all return exit code zero.
 
+`enterprise-terraform-trial-01` is retained as an excluded automation pilot. Apply, idempotence, destroy, and cleanup succeeded, but the first verifier attempted HTTP before the Auto Scaling target was healthy. The verifier was changed to wait for an `InService` instance and healthy target before testing HTTP. The run is not counted as a successful formal observation.
+
 Timing results will be summarized only after three successful trials per tool. The pilot runs are feasibility evidence and are not mixed with the formal timing dataset.
 
 ## Interpretation boundary
