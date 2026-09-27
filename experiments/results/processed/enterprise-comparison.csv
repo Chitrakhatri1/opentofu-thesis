@@ -1,0 +1,9 @@
+trial_id,tool,git_commit,region,cache_condition,init_seconds,init_exit,validate_seconds,validate_exit,plan_seconds,plan_exit,apply_seconds,apply_exit,verify_seconds,verify_exit,idempotence_seconds,idempotence_exit,destroy_seconds,destroy_exit,cleanup_seconds,cleanup_exit,status
+enterprise-terraform-trial-01,terraform,62433514eb385718f409ef0e6f71d99c4516fbb9,eu-central-1,warm,1.148,0,2.176,0,4.228,0,159.069,0,4.210,1,6.019,0,365.108,0,1.871,0,failed
+enterprise-terraform-trial-02,terraform,dd01df0646236a5896259eb4a5b6d26ed015d8b4,eu-central-1,warm,1.090,0,2.023,0,3.857,0,163.646,0,27.794,0,6.171,0,352.056,0,1.892,0,success
+enterprise-terraform-trial-03,terraform,dd01df0646236a5896259eb4a5b6d26ed015d8b4,eu-central-1,warm,1.011,0,1.920,0,4.381,0,160.726,0,28.233,0,7.091,0,385.068,0,1.898,0,success
+enterprise-terraform-trial-04,terraform,dd01df0646236a5896259eb4a5b6d26ed015d8b4,eu-central-1,warm,0.948,0,2.006,0,3.084,1,0,99,0,99,0,99,0,99,0,99,failed
+enterprise-terraform-trial-05,terraform,dd01df0646236a5896259eb4a5b6d26ed015d8b4,eu-central-1,warm,1.121,0,2.035,0,3.483,0,161.087,0,27.281,0,9.043,0,354.925,0,1.939,0,success
+enterprise-tofu-trial-02,tofu,b90acdaac211c430d6e743cd87557f9fa8f57c68,eu-central-1,warm,9.579,0,1.517,0,2.603,0,179.440,0,27.528,0,5.328,0,360.418,0,1.973,0,success
+enterprise-tofu-trial-03,tofu,b90acdaac211c430d6e743cd87557f9fa8f57c68,eu-central-1,warm,13.530,0,1.552,0,3.021,0,158.194,0,27.768,0,5.188,0,377.799,0,1.940,0,success
+enterprise-tofu-trial-04,tofu,b90acdaac211c430d6e743cd87557f9fa8f57c68,eu-central-1,warm,8.864,0,1.497,0,2.949,0,164.148,0,17.305,0,6.773,0,352.264,0,2.012,0,success

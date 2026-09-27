@@ -231,6 +231,14 @@ OpenTofu reported `Destroy complete! Resources: 19 destroyed.` The local handoff
 
 An earlier handoff attempt was interrupted when the live AWS resources disappeared before the final plan. Its cause was not established, so it is retained as an excluded pilot and is not used as successful migration evidence. Repeating the experiment with explicit workspaces, an immediate state backup, checksum, saved outputs, and a fixed command order produced the valid result above.
 
+### Phase 7 - Enterprise-lite multi-cloud case
+
+The professor-provided Azure project was used as an industry reference for architectural patterns rather than copied feature for feature. A separate `enterprise-lite/` implementation was created so the validated baseline remained unchanged. The bounded AWS case adds private workload subnets, workload identity, least-privilege object-storage access, an S3 gateway endpoint, a launch template, and a one-instance Auto Scaling Group behind an Application Load Balancer. The GCP case applies the same architectural intent through a custom network, private-access subnet, service account, bucket IAM, protected versioned storage, and optional private compute.
+
+The formal AWS enterprise runner executes the same lifecycle for both tools and accepts a trial only when all eight phases return exit code zero. Three Terraform and three OpenTofu trials passed apply, live target/HTTP verification, no-change idempotence, destroy, and independent cleanup. Median apply time was 161.087 seconds for Terraform and 164.148 seconds for OpenTofu; median destroy time was 354.925 and 360.418 seconds respectively. OpenTofu initialization was higher because every trial intentionally began from the committed Terraform-form lock file and included registry-lock translation relevant to migration. The small sample supports functional equivalence for this case, not a universal speed ranking.
+
+Cross-provider analysis counted 25 Terraform-language files and 25 provider resource blocks in AWS, compared with 21 files and seven resource blocks in GCP. There were zero Terraform-specific versus OpenTofu-specific resource-code forks: each provider implementation is shared by both tools. Resource schemas remain cloud-specific, while module composition, naming, inputs/outputs, workload-identity intent, storage protection, lifecycle workflow, idempotence, and cleanup conventions are reused.
+
 ## 5. Results
 
 ### 5.1 AWS operational comparison
@@ -308,16 +316,14 @@ Supported conclusion: OpenTofu does not make AWS and GCP resources provider-neut
 - No manual-console baseline was performed.
 - Results apply to the tested versions, providers, configurations, region, and local execution environment.
 
-## 7. Remaining implementation work
+## 7. Remaining work
 
-The central AWS comparison, GCP extension, and direct state handoff are complete. Remaining work should improve reproducibility and presentation rather than add another large cloud implementation.
+The implementation is complete for the proposed AWS/GCP scope. GCP and both enterprise-lite environments are included in GitHub Actions for backend-disabled Terraform/OpenTofu validation; cross-provider reuse is quantified; the successful state handoff is logged; and formal enterprise-lite comparison results are recorded.
 
-1. **Add GCP to GitHub Actions.** Run formatting, backend-disabled initialization, validation, and shell-syntax checks with both Terraform and OpenTofu. Do not perform credentialed apply operations in public CI.
-2. **Quantify cross-provider standardization.** Count AWS and GCP resource blocks, module/interface mappings, provider-specific files, verification scripts, and any lines required only for one IaC engine.
-3. **Update the migration and implementation logs.** Add the successful `state-handoff-2` result, lock-file observation, checksum, evidence paths, and cleanup result.
-4. **Create three meeting visuals.** Prepare an AWS/GCP architecture diagram, the experiment lifecycle, and a median-duration chart with a small-sample warning.
-5. **Freeze the implementation scope after professor approval.** Do not add Azure, hybrid connectivity, a manual baseline, or a security experiment unless the professor explicitly requires it.
-6. **Begin thesis writing.** Complete the Design Science methodology, literature review, artifact description, results, validity discussion, and final answers to the three research questions.
+1. **Confirm the pushed GitHub Actions run is green.** CI performs static initialization and validation without cloud credentials or billable deployment.
+2. **Create meeting visuals.** Prepare the AWS/GCP architecture, experiment lifecycle, and median-duration chart with a small-sample warning.
+3. **Freeze scope after professor approval.** Do not add Azure, hybrid connectivity, a manual baseline, or a separate security experiment unless required.
+4. **Begin thesis writing.** Complete the methodology, literature review, artifact description, results, threats to validity, and final research-question answers.
 
 ## 8. Decisions requested from the professor
 
@@ -357,6 +363,10 @@ The central AWS comparison, GCP extension, and direct state handoff are complete
 | GCP implementation | `gcp-provider/` |
 | GCP evidence log | `gcp-provider/implementation-log.md` |
 | Migration record | `docs/migration-log.md` |
+| Enterprise-lite AWS/GCP implementation | `enterprise-lite/` |
+| Enterprise comparison dataset | `experiments/results/processed/enterprise-comparison.csv` |
+| Enterprise results | `enterprise-lite/RESULTS.md` |
+| Cross-provider reuse calculation | `enterprise-lite/CROSS_PROVIDER_REUSE.md` |
 | CI workflow | `.github/workflows/validate.yml` |
 
 ## 11. Current thesis position
