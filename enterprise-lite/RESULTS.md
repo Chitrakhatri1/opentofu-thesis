@@ -33,6 +33,8 @@ Formal AWS enterprise-lite results are stored in `experiments/results/processed/
 
 `enterprise-terraform-trial-01` is retained as an excluded automation pilot. Apply, idempotence, destroy, and cleanup succeeded, but the first verifier attempted HTTP before the Auto Scaling target was healthy. The verifier was changed to wait for an `InService` instance and healthy target before testing HTTP. The run is not counted as a successful formal observation.
 
+`enterprise-terraform-trial-04` is also excluded because the AWS SSO session expired before planning; no infrastructure was created. An initial OpenTofu invocation exposed that the runner attempted to select a workspace before initializing the OpenTofu provider cache. The runner now initializes first, then selects the isolated workspace and records provider metadata. That pre-execution automation check created no infrastructure and is not a performance observation.
+
 Timing results will be summarized only after three successful trials per tool. The pilot runs are feasibility evidence and are not mixed with the formal timing dataset.
 
 ## Interpretation boundary

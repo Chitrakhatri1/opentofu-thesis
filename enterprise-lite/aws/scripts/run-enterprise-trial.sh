@@ -13,7 +13,6 @@ CACHE_CONDITION=${3:-warm}
 [[ "${CACHE_CONDITION}" =~ ^[A-Za-z0-9._-]+$ ]] || die "Invalid cache label."
 
 require_enterprise_environment
-select_enterprise_workspace
 
 TRIAL_ID="enterprise-${TOOL}-trial-${TRIAL_NUMBER}"
 TRIAL_DIR="${RAW_RESULTS_DIR}/${TRIAL_ID}"
@@ -37,7 +36,6 @@ cp "${LOCK_FILE}" "${LOCK_BACKUP}"
 printf 'trial_id=%s\ntool=%s\ngit_commit=%s\nregion=%s\ncache_condition=%s\nstarted_at_utc=%s\n' \
   "${TRIAL_ID}" "${TOOL}" "${git_commit}" "${AWS_REGION}" "${CACHE_CONDITION}" "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" >"${TRIAL_DIR}/metadata.txt"
 "${TOOL}" version >"${TRIAL_DIR}/tool-version.log" 2>&1
-"${TOOL}" providers >"${TRIAL_DIR}/providers.log" 2>&1
 
 for step in init validate plan apply verify idempotence destroy cleanup; do
   printf -v "${step}_seconds" '%s' 0
@@ -79,6 +77,8 @@ run_step() {
 "${SCRIPT_DIR}/verify-cleanup.sh" opentofu-thesis | tee "${TRIAL_DIR}/preflight-cleanup.log"
 cd "${ENV_DIR}"
 run_step init "${TOOL}" init -no-color || die "Initialization failed."
+select_enterprise_workspace
+"${TOOL}" providers >"${TRIAL_DIR}/providers.log" 2>&1
 run_step validate "${TOOL}" validate -no-color || die "Validation failed."
 run_step plan "${TOOL}" plan -no-color -out="${PLAN_FILE}" || die "Plan failed."
 "${TOOL}" show -no-color "${PLAN_FILE}" >"${TRIAL_DIR}/saved-plan.log"
